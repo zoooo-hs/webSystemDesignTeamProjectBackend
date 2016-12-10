@@ -40,7 +40,7 @@ passport.use('local-login', // localstratage 이름을 local-login
         if(!user){
 
           console.log("email doesn't exist.");
-          return done(null, false);
+          return done(null,false);
         }
         console.log("email is checked.")
         if(user.password != password){
@@ -143,6 +143,8 @@ router.get('/info', function(req, res){
 
 //User있는지 체크 후 로그인 성공 or 실패
 router.post('/login', passport.authenticate('local-login'),function (req, res, err) {
+    console.log('helllo')
+    if(err) console.error(err);
 
     console.log("authenticate is completed.")
     res.json({
@@ -152,6 +154,7 @@ router.post('/login', passport.authenticate('local-login'),function (req, res, e
         }
       });
 });
+
 
 router.post('/loggedin',function (req,res,err) {
     if(req.user){

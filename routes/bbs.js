@@ -107,5 +107,36 @@ router.post('/',function (req,res) {
 
 
 });*/
+router.get('/del/:number',function(req,res){
+    var nickname="";
+    Post.findOne({number:req.params.number},function (err,post) {
+        if (err) return res.json({data: {error: "Post doesn't exist", data: ""}});
 
+        console.log(post);
+        nickname = post.author;
+
+        if (nickname == req.user.nickname) {
+            Post.remove({number: req.params.number}, function (err) {
+                if (err) return res.json({data: {error: "Can't delete the post", data: ""}})
+
+                res.json({data: {error: "", data: "Completely deleted."}})
+
+            })
+
+        } else {
+            console.log(req.user);
+            res.json({
+                data: {
+                    error: "Authorization failed.",
+                    data: ""
+
+                }
+
+            });
+
+        }
+    })
+
+
+})
 module.exports = router;
